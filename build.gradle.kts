@@ -44,8 +44,8 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = "1.8"
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget("1.8")
     }
 }
 
@@ -59,8 +59,8 @@ repositories {
 dependencies {
     implementation(gradleApi())
     implementation(localGroovy())
-    implementation("com.github.Fallen-Breath:remap:2ae23d72bb")
-    implementation("net.fabricmc:mapping-io:0.6.1")
+    implementation("com.github.Fallen-Breath:remap:f1c1480696")
+    implementation("net.fabricmc:mapping-io:0.8.0")
     testImplementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
 }
