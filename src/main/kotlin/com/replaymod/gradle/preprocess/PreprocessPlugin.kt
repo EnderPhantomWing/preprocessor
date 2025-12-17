@@ -155,7 +155,17 @@ class PreprocessPlugin : Plugin<Project> {
                     if (rootExtension.strictExtraMappings.getOrElse(false)) {
                         throw UnsupportedOperationException("Strict mappings are only supported with Loom.")
                     }
-                } else {
+                } else {  // loom case
+                    if (project.isUnobfuscated() || inherited.isUnobfuscated()) {
+                        // TODO: warn if one of the project is obfuscated, and its mapping is not mojmap
+                        // println("Found unobfuscated version: $project: ${project.isUnobfuscated()}, $inherited: ${inherited.isUnobfuscated()}")
+                        tasks.withType<PreprocessTask>().configureEach {
+                            // no mapping
+                            strictExtraMappings.convention(rootExtension.strictExtraMappings.orElse(false))
+                        }
+                        return@afterEvaluate
+                    }
+
                     val projectSrgMappings = project.tinyMappingsWithSrg
                     val inheritedSrgMappings = inherited.tinyMappingsWithSrg
                     val projectTinyMappings = project.tinyMappings
@@ -385,6 +395,10 @@ private fun readMappings(format: String, path: Path): MappingSet {
     } else {
         MappingFormats.byId(format).read(path)
     }
+}
+
+private fun Project.isUnobfuscated(): Boolean {
+    return plugins.hasPlugin("net.fabricmc.fabric-loom")
 }
 
 private val Project.intermediaryMappings: Mappings

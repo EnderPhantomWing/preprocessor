@@ -18,6 +18,10 @@ open class RootPreprocessExtension @Inject constructor(
         return this.rootNode ?: linkNodes(mainProject)?.also { rootNode = it }
     }
 
+    fun getNodes(): List<Node> {
+        return nodes.toList()
+    }
+
     fun createNode(project: String, mcVersion: Int, mappings: String): Node {
         return Node(project, mcVersion, mappings).also { nodes.add(it) }
     }
