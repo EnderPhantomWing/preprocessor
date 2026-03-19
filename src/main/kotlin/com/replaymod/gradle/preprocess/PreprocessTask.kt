@@ -221,6 +221,7 @@ open class PreprocessTask @Inject constructor(
             keywords.set(this@PreprocessTask.keywords)
             patternAnnotation.set(this@PreprocessTask.patternAnnotation)
             manageImports.set(this@PreprocessTask.manageImports)
+            enableRemapMessageCollector.set(this@PreprocessTask.enableRemapMessageCollector)
         }
 
         workQueue.await()
@@ -250,6 +251,7 @@ internal interface PreprocessParameters : WorkParameters {
     val keywords: MapProperty<String, Keywords>
     val patternAnnotation: Property<String> // optional
     val manageImports: Property<Boolean> // optional
+    val enableRemapMessageCollector: Property<Boolean> // optional
 }
 
 private val LOGGER = Logging.getLogger(PreprocessTask::class.java)
@@ -417,7 +419,7 @@ private class PreprocessActionImpl : Consumer<PreprocessParameters> {
         if (mappings != null) {
             classpath!!
             val javaTransformer = Transformer(mappings)
-            javaTransformer.enableMessageCollector = enableRemapMessageCollector.getOrElse(false)
+            javaTransformer.enableMessageCollector = params.enableRemapMessageCollector.getOrElse(false)
             javaTransformer.verboseCompilerMessages = logger.isInfoEnabled
             javaTransformer.patternAnnotation = patternAnnotation.orNull
             javaTransformer.manageImports = manageImports.getOrElse(false)
@@ -959,7 +961,7 @@ class CommentPreprocessor(private val vars: Map<String, Int>) {
             mapped
         }.also {
             if (stack.isNotEmpty()) {
-                throw ParserException("Missing endif in line ${stack.peek()?.lineno} of $fileName")
+                throw ParserException("Missing endif in line ${stack.last().lineno} of $fileName")
             }
         }
     }
