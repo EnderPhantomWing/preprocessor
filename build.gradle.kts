@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+
 /* Copyright (C) 2019 Jonas Herzig <me@johni0702.de>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -43,9 +46,19 @@ java.toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 tasks.withType<Test> {
     useJUnitPlatform()
 }
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = "1.8"
+
+//tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+//    kotlinOptions {
+//        jvmTarget = "21"
+//    }
+//}
+
+kotlin {
+    // Extension level
+    compilerOptions {
+        jvmTarget = JvmTarget.fromTarget("21")
+        languageVersion = KotlinVersion.fromVersion("2.3")
+        apiVersion = KotlinVersion.fromVersion("2.3")
     }
 }
 
@@ -65,7 +78,7 @@ dependencies {
     implementation("net.fabricmc:mapping-io:0.8.0")
     implementation("org.ow2.asm:asm:9.9.1")
 
-    compileOnly("net.fabricmc:fabric-loom-remap:1.16.2")
+    compileOnly("net.fabricmc.fabric-loom-remap:net.fabricmc.fabric-loom-remap.gradle.plugin:1.16.2")
 
     testImplementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
