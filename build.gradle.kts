@@ -1,6 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
-
 /* Copyright (C) 2019 Jonas Herzig <me@johni0702.de>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,6 +13,8 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
     `kotlin-dsl`
@@ -47,11 +46,9 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-//tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-//    kotlinOptions {
-//        jvmTarget = "21"
-//    }
-//}
+tasks.named("validatePlugins") {
+    enabled = false
+}
 
 kotlin {
     // Extension level
@@ -72,7 +69,7 @@ repositories {
 dependencies {
     implementation(gradleApi())
     implementation(localGroovy())
-    implementation("com.github.EnderPhantomWing:remap:f8586b0d7e") {
+    implementation("com.github.EnderPhantomWing:remap:528caaa9c9") {
         exclude("org.jetbrains.kotlin", "kotlin-compiler-embeddable")
     }
     implementation("net.fabricmc:mapping-io:0.8.0")
