@@ -69,7 +69,7 @@ repositories {
 dependencies {
     implementation(gradleApi())
     implementation(localGroovy())
-    implementation("com.github.EnderPhantomWing:remap:528caaa9c9") {
+    implementation("com.github.EnderPhantomWing:remap:7155c1eabd") {
         exclude("org.jetbrains.kotlin", "kotlin-compiler-embeddable")
     }
     implementation("net.fabricmc:mapping-io:0.8.0")
